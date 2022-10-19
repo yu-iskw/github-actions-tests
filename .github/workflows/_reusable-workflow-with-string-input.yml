@@ -1,0 +1,24 @@
+name: Test reusable workflow
+
+on:
+  workflow_call:
+    inputs:
+      string_input:
+        required: true
+        type: string
+        description: "sample_input"
+    
+jobs:
+  echo:
+    runs-on: ubuntu-latest
+    outputs:
+      deprecated_style_output: ${{ steps.set-output-step.outputs.deprecated_style_output }}
+      new_style_output: ${{ steps.set-output-step.outputs.new_style_output }}
+    steps:
+      - name: Set output
+        id: set-output-step
+        run: |
+          # Deprecated style
+          echo "::set-output name=deprecated_style_output::${{ inputs.string_input }}"
+          # New style
+          echo "new_style_output=${{ inputs.string_input }}" >> $GITHUB_OUTPUT
