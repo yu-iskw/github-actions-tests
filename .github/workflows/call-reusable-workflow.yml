@@ -34,6 +34,16 @@ jobs:
     uses: ./.github/workflows/_reusable-workflow-with-new-style.yml
     with:
       number_input: 123
+
+  plain-output:
+    runs-on: ubuntu-latest
+    outputs:
+      string_output: ${{ steps.set-outputs.outputs.deprecated_string_output }}
+    steps:
+      - name: Set outputs
+        id: set-outputs
+        run: |
+          echo "::set-output name=deprecated_string_output::"Hello, world.""
       
   show-outputs:
     needs:
@@ -43,10 +53,12 @@ jobs:
       - call-reusable-workflow-with-string-input-new
       - call-reusable-workflow-with-boolean-input-new
       - call-reusable-workflow-with-number-input-new
+      - plain-output
     runs-on: ubuntu-latest
     steps:
       - name: Show outputs
         run: |
+          echo "${{ needs.plain-output.outputs.deprecated_string_output }}"
           echo "${{ needs.call-reusable-workflow-with-string-input-deprecated.outputs.string_output }}"
           echo "${{ needs.call-reusable-workflow-with-boolean-input-deprecated.outputs.boolean_output }}"
           echo "${{ needs.call-reusable-workflow-with-number-input-deprecated.outputs.number_output }}"
