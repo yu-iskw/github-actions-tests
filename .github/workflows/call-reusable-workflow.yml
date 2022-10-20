@@ -12,10 +12,10 @@ jobs:
     with:
       string_input: "Hello, world."
       
-  call-reusable-workflow-with-bool-input:
+  call-reusable-workflow-with-boolean-input:
     uses: ./.github/workflows/_reusable-workflow.yml
     with:
-      bool_input: false
+      boolean_input: false
       
   call-reusable-workflow-with-number-input:
     uses: ./.github/workflows/_reusable-workflow.yml

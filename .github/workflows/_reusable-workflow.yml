@@ -9,7 +9,7 @@ on:
         default: ""
       boolean_input:
         required: false
-        type: bool
+        type: boolean
         default: true
       number_input:
         required: false
@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       string_output: ${{ steps.set-output-step.outputs.string_output }}
-      bool_output: ${{ steps.set-output-step.outputs.bool_output }}
+      boolean_output: ${{ steps.set-output-step.outputs.boolean_output }}
       number_output: ${{ steps.set-output-step.outputs.number_output }}
     steps:
       - name: Set output
@@ -29,14 +29,14 @@ jobs:
         run: |
           # New style
           echo "string_output=${{ inputs.string_input }}" >> $GITHUB_OUTPUT
-          echo "bool_output=${{ inputs.bool_input }}" >> $GITHUB_OUTPUT
+          echo "boolean_output=${{ inputs.boolean_input }}" >> $GITHUB_OUTPUT
           echo "number_output=${{ inputs.number_input }}" >> $GITHUB_OUTPUT
           
   set-deprecated-outputs:
     runs-on: ubuntu-latest
     outputs:
       string_output: ${{ steps.set-output-step.outputs.string_output }}
-      bool_output: ${{ steps.set-output-step.outputs.bool_output }}
+      boolean_output: ${{ steps.set-output-step.outputs.boolean_output }}
       number_output: ${{ steps.set-output-step.outputs.number_output }}
     steps:
       - name: Set output
@@ -44,5 +44,5 @@ jobs:
         run: |
           # Deprecated style
           echo "::set-output name=string_output::${{ inputs.string_input }}"
-          echo "::set-output name=bool_output::${{ inputs.bool_input }}"
+          echo "::set-output name=boolean_output::${{ inputs.boolean_input }}"
           echo "::set-output name=number_output::${{ inputs.number_output }}"
