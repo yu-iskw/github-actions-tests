@@ -1,0 +1,23 @@
+name: Call reusable workflows
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  call-reusable-workflow-with-string-input:
+    uses: ./.github/workflows/_reusable-workflow.yml
+    with:
+      string_input: "Hello, world."
+      
+  call-reusable-workflow-with-bool-input:
+    uses: ./.github/workflows/_reusable-workflow.yml
+    with:
+      bool_input: false
+      
+  call-reusable-workflow-with-number-input:
+    uses: ./.github/workflows/_reusable-workflow.yml
+    with:
+      number_input: 123

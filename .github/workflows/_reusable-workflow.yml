@@ -1,0 +1,48 @@
+name: Test reusable workflow
+
+on:
+  workflow_call:
+    inputs:
+      string_input:
+        required: false
+        type: string
+        default: ""
+      boolean_input:
+        required: false
+        type: bool
+        default: true
+      number_input:
+        required: false
+        type: number
+        default: 0
+    
+jobs:
+  set-outputs:
+    runs-on: ubuntu-latest
+    outputs:
+      string_output: ${{ steps.set-output-step.outputs.string_output }}
+      bool_output: ${{ steps.set-output-step.outputs.bool_output }}
+      number_output: ${{ steps.set-output-step.outputs.number_output }}
+    steps:
+      - name: Set output
+        id: set-output-step
+        run: |
+          # New style
+          echo "string_output=${{ inputs.string_input }}" >> $GITHUB_OUTPUT
+          echo "bool_output=${{ inputs.bool_input }}" >> $GITHUB_OUTPUT
+          echo "number_output=${{ inputs.number_input }}" >> $GITHUB_OUTPUT
+          
+  set-deprecated-outputs:
+    runs-on: ubuntu-latest
+    outputs:
+      string_output: ${{ steps.set-output-step.outputs.string_output }}
+      bool_output: ${{ steps.set-output-step.outputs.bool_output }}
+      number_output: ${{ steps.set-output-step.outputs.number_output }}
+    steps:
+      - name: Set output
+        id: set-output-step
+        run: |
+          # Deprecated style
+          echo "::set-output name=string_output::${{ inputs.string_input }}"
+          echo "::set-output name=bool_output::${{ inputs.bool_input }}"
+          echo "::set-output name=number_output::${{ inputs.number_output }}"
