@@ -7,17 +7,30 @@ on:
       - main
 
 jobs:
-  call-reusable-workflow-with-string-input:
-    uses: ./.github/workflows/_reusable-workflow.yml
+  # deprecated style
+  call-reusable-workflow-with-string-input-deprecated:
+    uses: ./.github/workflows/_reusable-workflow-with-deprected-style.yml
     with:
       string_input: "Hello, world."
-      
-  call-reusable-workflow-with-boolean-input:
-    uses: ./.github/workflows/_reusable-workflow.yml
+  call-reusable-workflow-with-boolean-input-deprecated:
+    uses: ./.github/workflows/_reusable-workflow-with-deprected-style.yml
     with:
       boolean_input: false
+  call-reusable-workflow-with-number-input-deprecated:
+    uses: ./.github/workflows/_reusable-workflow-with-deprected-style.yml
+    with:
+      number_input: 123
       
-  call-reusable-workflow-with-number-input:
-    uses: ./.github/workflows/_reusable-workflow.yml
+  # new style
+  call-reusable-workflow-with-string-input-new:
+    uses: ./.github/workflows/_reusable-workflow-with-new-style.yml
+    with:
+      string_input: "Hello, world."
+  call-reusable-workflow-with-boolean-input-new:
+    uses: ./.github/workflows/_reusable-workflow-with-new-style.yml
+    with:
+      boolean_input: false
+  call-reusable-workflow-with-number-input-new:
+    uses: ./.github/workflows/_reusable-workflow-with-new-style.yml
     with:
       number_input: 123

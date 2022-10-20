@@ -15,24 +15,16 @@ on:
         required: false
         type: number
         default: 0
-    
+    outputs:
+      string_output:
+        value: ${{ jobs.set-outputs.string_output }}
+      boolean_output:
+        value: ${{ jobs.set-outputs.boolean_output }}
+      number_output:
+        value: ${{ jobs.set-outputs.number_output }}
+        
 jobs:
   set-outputs:
-    runs-on: ubuntu-latest
-    outputs:
-      string_output: ${{ steps.set-output-step.outputs.string_output }}
-      boolean_output: ${{ steps.set-output-step.outputs.boolean_output }}
-      number_output: ${{ steps.set-output-step.outputs.number_output }}
-    steps:
-      - name: Set output
-        id: set-output-step
-        run: |
-          # New style
-          echo "string_output=${{ inputs.string_input }}" >> $GITHUB_OUTPUT
-          echo "boolean_output=${{ inputs.boolean_input }}" >> $GITHUB_OUTPUT
-          echo "number_output=${{ inputs.number_input }}" >> $GITHUB_OUTPUT
-          
-  set-deprecated-outputs:
     runs-on: ubuntu-latest
     outputs:
       string_output: ${{ steps.set-output-step.outputs.string_output }}
