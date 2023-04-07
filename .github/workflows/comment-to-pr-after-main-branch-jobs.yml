@@ -49,6 +49,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           debug: true
+          result-encoding: string
           script: |
             const pr_number = "${{ steps.get_pr_number.outputs.result }}";
             const pr = await github.rest.pulls.get({
