@@ -56,8 +56,9 @@ jobs:
               repo: context.repo.repo,
               pull_number: pr_number
             });
-            # Remove unnecessary quotes at the head and tail
-            const pr_owner = login.replace(/^"(.*)"$/, '$1');
+            # Remove unnecessary double quotes at the head and tail
+            const regex = /^"(.*)"$/;
+            const pr_owner = login.replace(regex, '$1');
             console.log(`The GitHub account name who created the merged pull request is ${login}`);
             return pr_owner;
       - name: "Comment to the merged pull request"
