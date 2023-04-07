@@ -58,7 +58,7 @@ jobs:
             });
             console.log(`The GitHub account name who created the merged pull request is ${login}`);
             # remove unnecessary quotes at the head and tail
-            login = login.replace(/^"(.*)"$/, '$1');
+            # login = login.replace(/^"(.*)"$/, '$1');
             return login;
       - name: "Comment to the pull request"
         uses: actions/github-script@v6
