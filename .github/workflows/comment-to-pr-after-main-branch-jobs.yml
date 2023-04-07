@@ -65,8 +65,9 @@ jobs:
           debug: true
           script: |
             const pr_number = "${{ steps.get_pr_number.outputs.result }}";
+            const pr_owner = "${{ steps.get_pr_creator.outputs.result }}";
             const body = """
-              @${{ steps.get_pr_creator.outputs.result }} The job is passed.
+            @${pr_owner} Thank you for your contribution!
             """;
             const { data: { html_url } } = await github.rest.issues.createComment({
               owner: context.repo.owner,
