@@ -24,7 +24,7 @@ jobs:
       - name: "Get the commit hash of the merged pull request"
         id: get_commit_hash
         run: |
-          echo "commit_hash::$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          echo "commit_hash=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
       # Get the pull request number from the commit hash using github-script
       - name: "Get the pull request number"
         id: get_pr_number
