@@ -65,7 +65,6 @@ jobs:
           debug: true
           script: |
             const pr_number = "${{ steps.get_pr_number.outputs.result }}";
-            const pr_creator = "${{ steps.get_pr_creator.outputs.result }}";
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
