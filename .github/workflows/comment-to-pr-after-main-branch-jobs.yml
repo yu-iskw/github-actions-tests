@@ -21,6 +21,9 @@ jobs:
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
+      - name: "Get the pull request number"
+        run: |
+          echo "${{ github.event.pull_request.number }}"
       - name: "Get the commit hash of the merged pull request"
         id: get_commit_hash
         run: |
