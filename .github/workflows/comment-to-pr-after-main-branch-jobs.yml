@@ -47,7 +47,7 @@ jobs:
         id: get_pr_creator
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
           debug: true
           script: |
             const pr_number = "${{ steps.get_pr_number.outputs.result }}";
@@ -57,13 +57,13 @@ jobs:
               pull_number: pr_number
             });
             console.log(`The GitHub account name who created the merged pull request is ${login}`);
-            # remove unnecessary quotes
-            login = login.replace(/"/g, "");
+            # remove unnecessary quotes at the head and tail
+            login = login.replace(/^"(.*)"$/, '$1');
             return login;
       - name: "Comment to the pull request"
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
           debug: true
           script: |
             const pr_number = "${{ steps.get_pr_number.outputs.result }}";
