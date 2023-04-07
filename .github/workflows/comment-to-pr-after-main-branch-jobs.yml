@@ -28,18 +28,17 @@ jobs:
       # Get the pull request number from the commit hash using github-script
       - name: "Get the pull request number"
         id: get_pr_number
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const commit_hash = "${{ steps.get_commit_hash.outputs.commit_hash }}";
             const { data: { number } } = await github.rest.repos.getCommit({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: "${{ steps.get_commit_hash.outputs.commit_hash }}"
+              commit_sha: commit_hash
             });
-            console.log(`The pull request number is ${number}`);
-            return number;
-          result-encoding: string
+            core.setOutput("result", number);
       - name: "Comment to the pull request"
         uses: actions/github-script@v5
         with:
