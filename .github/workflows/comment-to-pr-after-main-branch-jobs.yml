@@ -42,6 +42,22 @@ jobs:
             const pr_number = items[0].number;
             console.log(`The pull request number is ${pr_number}`);
             return pr_number;
+      # Get the GitHub account name who created the merged pull request by the pull request number
+      - name: "Get the GitHub account name who created the merged pull request"
+        id: get_pr_creator
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          debug: true
+          script: |
+            const pr_number = "${{ steps.get_pr_number.outputs.result }}";
+            const { data: { user: { login } } } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr_number
+            });
+            console.log(`The GitHub account name who created the merged pull request is ${login}`);
+            return login;
       - name: "Comment to the pull request"
         uses: actions/github-script@v6
         with:
@@ -49,9 +65,10 @@ jobs:
           debug: true
           script: |
             const pr_number = "${{ steps.get_pr_number.outputs.result }}";
+            const pr_owner = "${{ steps.get_pr_creator.outputs.result }}";
             const { data: { html_url } } = await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: pr_number,
-              body: "The jobs are passed!"
+              body: "@${pr_owner} The job is passed."
             });
