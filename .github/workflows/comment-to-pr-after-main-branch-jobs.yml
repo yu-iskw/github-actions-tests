@@ -1,0 +1,54 @@
+name: "Comment to a merged pull request if the jobs are passed"
+
+on:
+  push:
+    - branches:
+        - main
+
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Job 1"
+        run: echo "Job 1"
+  
+  comment:
+    needs: [ "job1" ]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+      - name: "Get the commit hash of the merged pull request"
+        id: get_commit_hash
+        run: |
+          echo "::set-output name=commit_hash::$(git rev-parse HEAD)"
+      # Get the pull request number from the commit hash using github-script
+      - name: "Get the pull request number"
+        id: get_pr_number
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: { number } } = await github.rest.repos.getCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "${{ steps.get_commit_hash.outputs.commit_hash }}"
+            });
+            console.log(`The pull request number is ${number}`);
+            return number;
+          result-encoding: string
+      - name: "Comment to the pull request"
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ steps.get_pr_number.outputs.result }},
+              body: "The jobs are passed!"
+            });
