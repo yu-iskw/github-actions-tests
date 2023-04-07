@@ -26,18 +26,17 @@ jobs:
         run: |
           echo "commit_hash=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
       # Get the pull request number from the commit hash using github-script
-      - name: "Get the pull request number"
+      - name: "Search the pull request number from the commit hash of the merged pull request"
         id: get_pr_number
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const commit_hash = "${{ steps.get_commit_hash.outputs.commit_hash }}";
-            const { data: { number } } = await github.rest.repos.getCommit({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              commit_sha: commit_hash
+            const { data: { number } } = await github.rest.search.issuesAndPullRequests({
+              q: `${commit_hash} type:pr is:merged`
             });
+            console.log(number);
             core.setOutput("result", number);
       - name: "Comment to the pull request"
         uses: actions/github-script@v6
