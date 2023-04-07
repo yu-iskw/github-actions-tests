@@ -33,7 +33,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           debug: true
           script: |
-            const commit_hash = "${{ steps.get_commit_hash.outputs.result }}";
+            const commit_hash = "${{ steps.get_commit_hash.outputs.commit_hash }}";
             const { data: { items } } = await github.rest.search.issuesAndPullRequests({
               q: `${commit_hash} type:pr is:merged`
             });
