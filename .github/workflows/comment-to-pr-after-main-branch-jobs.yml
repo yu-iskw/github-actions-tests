@@ -16,7 +16,8 @@ jobs:
     needs: [ "job1" ]
     runs-on: ubuntu-latest
     permissions:
-      contents: 'read'
+      contents: read
+      id-token: write
       issues: write
       pull-requests: write
     steps:
@@ -40,7 +41,7 @@ jobs:
             });
             const pr_number = items[0].number;
             console.log(`The pull request number is ${pr_number}`);
-            core.setOutput("result", pr_number);
+            return pr_number;
       - name: "Comment to the pull request"
         uses: actions/github-script@v6
         with:
