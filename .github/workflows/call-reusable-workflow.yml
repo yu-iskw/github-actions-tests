@@ -1,0 +1,70 @@
+name: Call reusable workflows
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  # deprecated style
+  call-reusable-workflow-with-string-input-deprecated:
+    uses: ./.github/workflows/_reusable-workflow-with-deprected-style.yml
+    with:
+      string_input: "Hello, world."
+  call-reusable-workflow-with-boolean-input-deprecated:
+    uses: ./.github/workflows/_reusable-workflow-with-deprected-style.yml
+    with:
+      boolean_input: false
+  call-reusable-workflow-with-number-input-deprecated:
+    uses: ./.github/workflows/_reusable-workflow-with-deprected-style.yml
+    with:
+      number_input: 123
+      
+  # new style
+  call-reusable-workflow-with-string-input-new:
+    uses: ./.github/workflows/_reusable-workflow-with-new-style.yml
+    with:
+      string_input: "Hello, world."
+  call-reusable-workflow-with-boolean-input-new:
+    uses: ./.github/workflows/_reusable-workflow-with-new-style.yml
+    with:
+      boolean_input: false
+  call-reusable-workflow-with-number-input-new:
+    uses: ./.github/workflows/_reusable-workflow-with-new-style.yml
+    with:
+      number_input: 123
+
+  plain-output:
+    runs-on: ubuntu-latest
+    outputs:
+      deprecated_string_output: ${{ steps.set-outputs.outputs.deprecated_string_output }}
+      new_string_output: ${{ steps.set-outputs.outputs.new_string_output }}
+    steps:
+      - name: Set outputs
+        id: set-outputs
+        run: |
+          echo "::set-output name=deprecated_string_output::"Hello, world.""
+          echo "new_string_output="Hello, world."" >> $GITHUB_OUTPUT
+      
+  show-outputs:
+    needs:
+      - call-reusable-workflow-with-string-input-deprecated
+      - call-reusable-workflow-with-boolean-input-deprecated
+      - call-reusable-workflow-with-number-input-deprecated
+      - call-reusable-workflow-with-string-input-new
+      - call-reusable-workflow-with-boolean-input-new
+      - call-reusable-workflow-with-number-input-new
+      - plain-output
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show outputs
+        run: |
+          echo "${{ needs.plain-output.outputs.deprecated_string_output }}"
+          echo "${{ needs.plain-output.outputs.new_string_output }}"
+          echo "${{ needs.call-reusable-workflow-with-string-input-deprecated.outputs.string_output }}"
+          echo "${{ needs.call-reusable-workflow-with-boolean-input-deprecated.outputs.boolean_output }}"
+          echo "${{ needs.call-reusable-workflow-with-number-input-deprecated.outputs.number_output }}"
+          echo "${{ needs.call-reusable-workflow-with-string-input-new.outputs.string_output }}"
+          echo "${{ needs.call-reusable-workflow-with-boolean-input-new.outputs.boolean_output }}"
+          echo "${{ needs.call-reusable-workflow-with-number-input-new.outputs.number_output }}"
