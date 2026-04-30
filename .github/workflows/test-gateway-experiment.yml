@@ -21,7 +21,7 @@ on:
           - pipeline-3
 
 jobs:
-  deploy-${{ inputs.target }}:
+  deploy:
     runs-on: ubuntu-latest
     environment:
       name: ${{ inputs.github_environment }}
