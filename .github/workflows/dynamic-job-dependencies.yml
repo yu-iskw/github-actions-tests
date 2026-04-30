@@ -1,0 +1,43 @@
+name: "Dynamic job dependencies"
+
+on:
+  pull_request:
+
+jobs:
+  set-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set matrix
+        id: set-matrix
+        run: |
+          matrix_json="$(cat <<EOF
+          {
+            "include": [
+              {
+                "identifier": "id1"
+              },
+              {
+                "identifier": "id2",
+                "dependent_workflow_names": ["id1"]
+              },
+              {
+                "identifier": "id3",
+                "dependent_workflow_names": ["id2"]
+              }
+            ]
+          }
+          EOF
+          )"
+          matrix_json=$(echo "${matrix_json}" | jq -c -r '.')
+          echo "matrix=${matrix_json}" >> "${GITHUB_OUTPUT}"
+
+  echo-workflow-identifier:
+    needs: [set-matrix]
+    uses: ./.github/workflows/_reusable-echo.yml
+    with:
+      identifier: ${{ matrix.identifier }}
+    strategy:
+      matrix: ${{ fromJSON(needs.set-matrix.outputs.matrix) }}

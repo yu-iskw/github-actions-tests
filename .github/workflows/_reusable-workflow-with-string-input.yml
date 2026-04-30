@@ -18,7 +18,5 @@ jobs:
       - name: Set output
         id: set-output-step
         run: |
-          # Deprecated style
-          echo "::set-output name=deprecated_style_output::${{ inputs.string_input }}"
-          # New style
-          echo "new_style_output=${{ inputs.string_input }}" >> $GITHUB_OUTPUT
+          echo "deprecated_style_output=${{ inputs.string_input }}" >> "${GITHUB_OUTPUT}"
+          echo "new_style_output=${{ inputs.string_input }}" >> "${GITHUB_OUTPUT}"
