@@ -2,17 +2,26 @@ name: "Test gateway experiment"
 
 on:
   workflow_dispatch:
+    inputs:
+      github_environment:
+        description: GitHub Environment to use for this test run
+        required: true
+        type: choice
+        options:
+          - test-gateway
+          - test-gateway-no-reviewers
+        default: test-gateway
 
 jobs:
   experiment:
     runs-on: ubuntu-latest
     environment:
-      name: test-gateway
+      name: ${{ inputs.github_environment }}
       deployment: false
     steps:
       - uses: actions/checkout@v4
       - name: Prove run context
         run: |
-          echo "Environment: test-gateway (from workflow job configuration)"
+          echo "Environment: ${{ inputs.github_environment }} (from workflow job configuration)"
           echo "Run ID: ${GITHUB_RUN_ID}"
           echo "Ref: ${GITHUB_REF}"
