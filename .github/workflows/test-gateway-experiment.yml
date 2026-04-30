@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: ${{ inputs.github_environment }}
-      deployment: false
+      deployment: ${{ inputs.github_environment == 'test-gateway' }}
     steps:
       - uses: actions/checkout@v4
       - name: Prove run context
