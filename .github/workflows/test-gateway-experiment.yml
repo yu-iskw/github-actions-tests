@@ -21,12 +21,11 @@ on:
           - pipeline-3
 
 jobs:
-  deploy:
+  deploy-${{ inputs.target }}:
     runs-on: ubuntu-latest
     environment:
       name: ${{ inputs.github_environment }}
       deployment: ${{ inputs.github_environment == 'test-gateway' }}
-    id: deploy-${{ inputs.target }}
     name: "Deploy (${{ inputs.github_environment }}, ${{ inputs.target }})"
     steps:
       - uses: actions/checkout@v4
