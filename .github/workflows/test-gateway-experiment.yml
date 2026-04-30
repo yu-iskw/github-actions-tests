@@ -11,14 +11,23 @@ on:
           - test-gateway
           - test-gateway-no-reviewers
         default: test-gateway
+      target:
+        description: mock target
+        required: true
+        type: chose
+        options:
+          - pipeline-1
+          - pipeline-2
+          - pipeline-3
 
 jobs:
-  experiment:
+  deploy:
     runs-on: ubuntu-latest
     environment:
       name: ${{ inputs.github_environment }}
       deployment: ${{ inputs.github_environment == 'test-gateway' }}
-    name: "Experiment (${{ inputs.github_environment }})"
+    id: deploy-${{ inputs.target }}
+    name: "Deploy (${{ inputs.github_environment }}, ${{ inputs.target }})"
     steps:
       - uses: actions/checkout@v4
       - name: Prove run context
