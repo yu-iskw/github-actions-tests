@@ -1,0 +1,17 @@
+name: Reusable echo workflow
+
+on:
+  workflow_call:
+    inputs:
+      identifier:
+        required: true
+        type: string
+        description: "The identifier of the workflow that is calling this one"
+
+jobs:
+  echo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo identifier
+        run: |
+          echo "${{ inputs.identifier }}"

@@ -1,0 +1,18 @@
+name: "Test gateway experiment"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  experiment:
+    runs-on: ubuntu-latest
+    environment:
+      name: test-gateway
+      deployment: false
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prove run context
+        run: |
+          echo "Environment: test-gateway (from workflow job configuration)"
+          echo "Run ID: ${GITHUB_RUN_ID}"
+          echo "Ref: ${GITHUB_REF}"
