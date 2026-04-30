@@ -18,6 +18,7 @@ jobs:
     environment:
       name: ${{ inputs.github_environment }}
       deployment: ${{ inputs.github_environment == 'test-gateway' }}
+    name: "Experiment (${{ inputs.github_environment }})"
     steps:
       - uses: actions/checkout@v4
       - name: Prove run context
