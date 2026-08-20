@@ -1,0 +1,40 @@
+name: Test reusable workflow
+
+on:
+  workflow_call:
+    inputs:
+      string_input:
+        required: false
+        type: string
+        default: ""
+      boolean_input:
+        required: false
+        type: boolean
+        default: true
+      number_input:
+        required: false
+        type: number
+        default: 0
+    outputs:
+      string_output:
+        value: ${{ jobs.set-outputs.string_output }}
+      boolean_output:
+        value: ${{ jobs.set-outputs.boolean_output }}
+      number_output:
+        value: ${{ jobs.set-outputs.number_output }}
+        
+jobs:
+  set-outputs:
+    runs-on: ubuntu-latest
+    outputs:
+      string_output: ${{ steps.set-output-step.outputs.string_output }}
+      boolean_output: ${{ steps.set-output-step.outputs.boolean_output }}
+      number_output: ${{ steps.set-output-step.outputs.number_output }}
+    steps:
+      - name: Set output
+        id: set-output-step
+        run: |
+          # Deprecated style
+          echo "::set-output name=string_output::${{ inputs.string_input }}"
+          echo "::set-output name=boolean_output::${{ inputs.boolean_input }}"
+          echo "::set-output name=number_output::${{ inputs.number_output }}"
