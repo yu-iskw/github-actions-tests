@@ -8,10 +8,14 @@ on:
         type: string
         description: "The identifier of the workflow that is calling this one"
 
+permissions: {}
+
 jobs:
   echo:
     runs-on: ubuntu-latest
     steps:
       - name: Echo identifier
         run: |
-          echo "${{ inputs.identifier }}"
+          echo "${INPUTS_IDENTIFIER}"
+        env:
+          INPUTS_IDENTIFIER: ${{ inputs.identifier }}

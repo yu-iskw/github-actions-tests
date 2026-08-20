@@ -14,23 +14,31 @@ on:
       target:
         description: mock target
         required: true
-        type: chose
+        type: choice
         options:
           - pipeline-1
           - pipeline-2
           - pipeline-3
 
+permissions: {}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     environment:
       name: ${{ inputs.github_environment }}
       deployment: ${{ inputs.github_environment == 'test-gateway' }}
     name: "Deploy (${{ inputs.github_environment }}, ${{ inputs.target }})"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Prove run context
         run: |
-          echo "Environment: ${{ inputs.github_environment }} (from workflow job configuration)"
+          echo "Environment: ${GITHUB_ENVIRONMENT} (from workflow job configuration)"
           echo "Run ID: ${GITHUB_RUN_ID}"
           echo "Ref: ${GITHUB_REF}"
+        env:
+          GITHUB_ENVIRONMENT: ${{ inputs.github_environment }}

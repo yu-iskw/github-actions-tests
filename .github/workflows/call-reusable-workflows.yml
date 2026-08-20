@@ -6,6 +6,8 @@ on:
     branches:
       - main
 
+permissions: {}
+
 jobs:
   call-reusable-workflow-with-string-input:
     uses: ./.github/workflows/_reusable-workflow-with-string-input.yml
