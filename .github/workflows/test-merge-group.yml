@@ -12,4 +12,4 @@ jobs:
         with:
           persist-credentials: false
       - name: Test code
-        run: exit 1
+        run: exit 2
